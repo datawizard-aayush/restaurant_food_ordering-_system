@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel Aroma — Taste Crafted Daily</title>
+  <meta name="description" content="Order from your table. See specials of the day, hotel history, and real customer reviews." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e0f;
+      --card: #151517;
+      --muted: #a8acb3;
+      --text: #ffffff;
+      --accent: #ff6a3d;
+      --accent-2: #ffd166;
+      --ok: #36d399;
+      --warn: #f59e0b;
+      --maxw: 1200px;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; border-radius: 12px; }
+
+    /* Navbar */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(140%) blur(10px);
+      background: rgba(10,10,10,0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner { max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .4px; }
+    .brand-badge {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; color: #121212; font-weight: 900;
+    }
+    .nav-links { display: flex; gap: 18px; align-items: center; }
+    .nav-links a { color: var(--muted); font-weight: 500; }
+    .nav-links a:hover { color: #fff; }
+    .btn {
+      appearance: none; border: 0; padding: 10px 16px; border-radius: 12px;
+      background: var(--accent); color: #121212; font-weight: 700; cursor: pointer; transition: transform .05s ease, filter .2s ease;
+    }
+    .btn:hover { filter: brightness(1.05); }
+    .btn:active { transform: translateY(1px); }
+
+    /* Hero */
+    .hero {
+      position: relative; isolation: isolate;
+      min-height: 74vh; display: grid; place-items: center; text-align: center; overflow: clip;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background: url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400&auto=format&fit=crop') center/cover no-repeat;
+      filter: brightness(.55);
+    }
+    .hero-shade {
+      position: absolute; inset: 0; background: radial-gradient(80% 60% at 50% 30%, rgba(0,0,0,.1), rgba(0,0,0,.7));
+      z-index: -1;
+    }
+    .hero-inner { max-width: 900px; padding: 80px 20px; }
+    .hero h1 { margin: 0 0 14px; font-size: clamp(32px, 5vw, 56px); line-height: 1.05; }
+    .hero p { margin: 0 0 22px; color: var(--muted); font-size: clamp(16px, 2.5vw, 20px); }
+    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-secondary {
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.18); padding: 10px 16px; border-radius: 12px; font-weight: 600;
+    }
+
+    /* Section base */
+    .section { max-width: var(--maxw); margin: 0 auto; padding: 56px 20px; }
+    .section h2 { margin: 0 0 14px; font-size: clamp(24px, 3.6vw, 34px); }
+    .section p.lead { margin: 0 0 26px; color: var(--muted); }
+
+    /* History */
+    .history {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .history .card {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .pill {
+      display: inline-flex; gap: 8px; align-items: center; font-size: 12px; color: #0f172a;
+      background: linear-gradient(135deg, var(--accent-2), #fff3bf); padding: 6px 10px; border-radius: 999px; font-weight: 800; letter-spacing: .3px;
+    }
+
+    /* Specials */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .card-body { padding: 16px; }
+    .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: var(--muted); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.06); color: #fff; font-size: 12px; font-weight: 600;
+    }
+    .badge.ok { background: rgba(54,211,153,0.16); color: #c7ffea; }
+    .badge.warn { background: rgba(245,158,11,0.18); color: #ffe5b4; }
+
+    /* Reviews */
+    .reviews {
+      display: grid; grid-template-columns: 1.1fr 1.2fr; gap: 24px; align-items: center;
+    }
+    .review-slider {
+      position: relative; overflow: hidden; border-radius: var(--radius);
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow);
+    }
+    .slides { display: flex; transition: transform .4s ease; }
+    .review { min-width: 100%; padding: 22px; }
+    .review .stars { color: #ffd166; }
+    .slider-nav {
+      position: absolute; inset: auto 10px 10px auto; display: flex; gap: 8px;
+    }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.35); color: #fff; cursor: pointer;
+    }
+
+    /* Gallery */
+    .masonry {
+      columns: 3; column-gap: 14px;
+    }
+    .masonry img { margin: 0 0 14px; break-inside: avoid; border-radius: 12px; }
+
+    /* Footer */
+    footer {
+      padding: 26px 20px; text-align: center; color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .history, .reviews { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .masonry { columns: 2; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .cards { grid-template-columns: 1fr; }
+      .hero { min-height: 70vh; }
+      .masonry { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" role="banner">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-badge">HA</div>
+        <div>Hotel Aroma</div>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#history">History</a>
+        <a href="#specials">Specials</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#gallery">Gallery</a>
+        <button class="btn" id="loginBtn" aria-haspopup="dialog" aria-controls="loginModal">Login</button>
+      </nav>
+      <button class="btn" id="loginBtnMobile" aria-haspopup="dialog" aria-controls="loginModal">Login</button>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Welcome">
+    <div class="hero-bg" role="img" aria-label="Assorted gourmet dishes on table"></div>
+    <div class="hero-shade"></div>
+    <div class="hero-inner">
+      <div class="pill" style="margin-bottom:12px;">Order from your table • Live to Kitchen</div>
+      <h1>Taste crafted daily, served right from your table</h1>
+      <p>Browse specials, see our story, read real reviews, and sign in to start placing orders directly to the kitchen.</p>
+      <div class="cta-row">
+        <a class="btn" href="#specials">See Today’s Specials</a>
+        <button class="btn-secondary" id="openLogin2">Login to Order</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="history" class="section history">
+    <div class="card">
+      <h2>Our History</h2>
+      <p class="lead">Since 1998, Hotel Aroma has blended seasonal produce with classic recipes, serving thousands of happy guests.</p>
+      <p>What began as a small family kitchen has grown into a beloved destination. Our chefs bring regional flavors to life, and our team ensures every table feels at home.</p>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <span class="badge ok">Farm-to-Table</span>
+        <span class="badge">Authentic Recipes</span>
+        <span class="badge warn">Limited Daily Specials</span>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1200&auto=format&fit=crop" alt="Chef plating dish in kitchen">
+  </section>
+
+  <section id="specials" class="section">
+    <h2>Today’s Specials</h2>
+    <p class="lead">Handpicked by our chef every morning. Availability may be limited.</p>
+    <div class="cards">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Grilled salmon with herbs">
+        <div class="card-body">
+          <h3 style="margin:0 0 6px;">Citrus Herb Salmon</h3>
+          <div class="price-row">
+            <span class="badge ok">Chef’s Pick</span>
+            <span>$16.50</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1617195737496-7e0a264b2e3b?q=80&w=1200&auto=format&fit=crop" alt="Wood-fired pizza with basil">
+        <div class="card-body">
+          <h3 style="margin:0 0 6px;">Basil Margherita Pizza</h3>
+          <div class="price-row">
+            <span class="badge">Wood-Fired</span>
+            <span>$12.00</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1200&auto=format&fit=crop" alt="Pasta with truffle cream">
+        <div class="card-body">
+          <h3 style="margin:0 0 6px;">Truffle Cream Pasta</h3>
+          <div class="price-row">
+            <span class="badge warn">Limited</span>
+            <span>$14.75</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="reviews" class="section reviews">
+    <div>
+      <h2>What Customers Say</h2>
+      <p class="lead">Real feedback from our guests. Your next favorite dish might be a review away.</p>
+      <ul style="margin:0; padding-left:18px; color:var(--muted);">
+        <li>Average rating: 4.7/5</li>
+        <li>Fresh ingredients, quick service</li>
+        <li>Dine-in and table-side ordering available</li>
+      </ul>
+    </div>
+    <div class="review-slider" aria-roledescription="carousel" aria-label="Customer reviews">
+      <div class="slides" id="slides">
+        <div class="review" aria-label="Review 1">
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <p style="margin:10px 0 0;">“The truffle pasta was unforgettable. Ordering from the table was super easy.”</p>
+          <p style="margin:8px 0 0; color:var(--muted);">— Priya K.</p>
+        </div>
+        <div class="review" aria-label="Review 2">
+          <div class="stars">★★★★★</div>
+          <p style="margin:10px 0 0;">“Wood-fired pizza came out fast and perfect. Staff were lovely.”</p>
+          <p style="margin:8px 0 0; color:var(--muted);">— Arjun M.</p>
+        </div>
+        <div class="review" aria-label="Review 3">
+          <div class="stars">★★★★☆</div>
+          <p style="margin:10px 0 0;">“Great value and cozy ambience. Will be back for the salmon.”</p>
+          <p style="margin:8px 0 0; color:var(--muted);">— Sneha R.</p>
+        </div>
+      </div>
+      <div class="slider-nav">
+        <button class="icon-btn" id="prevBtn" aria-label="Previous review">‹</button>
+        <button class="icon-btn" id="nextBtn" aria-label="Next review">›</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <h2>Gallery</h2>
+    <p class="lead">A peek into our kitchen and plates.</p>
+    <div class="masonry">
+      <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=900&auto=format&fit=crop" alt="Steak sliced on board">
+      <img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=900&auto=format&fit=crop" alt="Colorful salad bowl">
+      <img src="https://images.unsplash.com/photo-1542806105-b9619e664d94?q=80&w=900&auto=format&fit=crop" alt="Pancakes with berries">
+      <img src="https://images.unsplash.com/photo-1514516870926-205989b07f16?q=80&w=900&auto=format&fit=crop" alt="Chef cooking in skillet">
+      <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?q=80&w=900&auto=format&fit=crop" alt="Dessert with chocolate">
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Hotel Aroma • Crafted with love and fresh ingredients.
+  </footer>
+
+  <!-- Login Modal -->
+  <dialog id="loginModal" style="border:0; border-radius:16px; padding:0; background:transparent;">
+    <form method="dialog" style="background:var(--card); border:1px solid rgba(255,255,255,0.08); border-radius:16px; width:min(440px, 92vw); box-shadow: var(--shadow);">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 18px; border-bottom:1px solid rgba(255,255,255,0.06);">
+        <strong>Login</strong>
+        <button value="cancel" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <div style="padding:18px;">
+        <label style="display:block; font-size:14px; margin:0 0 6px;">Email</label>
+        <input type="email" required placeholder="you@example.com" style="width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.16); background:#0f1113; color:#fff; outline: none; margin-bottom:12px;">
+        <label style="display:block; font-size:14px; margin:0 0 6px;">Password</label>
+        <input type="password" required placeholder="••••••••" style="width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.16); background:#0f1113; color:#fff; outline: none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <label style="display:flex; gap:8px; align-items:center; color:var(--muted); font-size:13px;">
+            <input type="checkbox"> Remember me
+          </label>
+          <a href="#" style="color:var(--accent); font-size:13px;">Forgot password?</a>
+        </div>
+      </div>
+      <div style="padding:14px 18px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid rgba(255,255,255,0.06);">
+        <button value="cancel" class="btn-secondary">Cancel</button>
+        <button value="confirm" class="btn">Login</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    const modal = document.getElementById('loginModal');
+    const loginBtns = [document.getElementById('loginBtn'), document.getElementById('loginBtnMobile'), document.getElementById('openLogin2')].filter(Boolean);
+    loginBtns.forEach(btn => btn.addEventListener('click', () => {
+      if (typeof modal.showModal === 'function') modal.showModal();
+      else alert('Login dialog not supported in this browser.');
+    }));
+    modal?.addEventListener('click', (e) => {
+      const dialogRect = e.currentTarget.querySelector('form')?.getBoundingClientRect();
+      if (!dialogRect) return;
+      const clickInside = e.clientX >= dialogRect.left && e.clientX <= dialogRect.right && e.clientY >= dialogRect.top && e.clientY <= dialogRect.bottom;
+      if (!clickInside) modal.close('backdrop');
+    });
+
+    // Reviews slider
+    const slides = document.getElementById('slides');
+    const prev = document.getElementById('prevBtn');
+    const next = document.getElementById('nextBtn');
+    let idx = 0;
+    function updateSlider() {
+      slides.style.transform = `translateX(-${idx * 100}%)`;
+    }
+    prev?.addEventListener('click', () => { idx = (idx + 2) % 3; updateSlider(); });
+    next?.addEventListener('click', () => { idx = (idx + 1) % 3; updateSlider(); });
+    setInterval(() => { idx = (idx + 1) % 3; updateSlider(); }, 6000);
+  </script>
+</body>
+</html>
